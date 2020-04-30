@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Api GitHub</title>
+</head>
+<body>
+    <div id="app">
+        <ul>
+
+        </ul>
+        <input type="text" name="user">
+        <button onclick="apiName()">Adicionar</button>
+    </div>
+   
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+
+        var url = 'https://api.github.com/users/'
+        var inputElement = document.querySelector("#app input");
+        var listElement = document.querySelector("#app ul");
+        var buttonElement = document.querySelector("#app  button");
+
+        var list = '';
+
+        function loading(){
+            var liElement = document.createElement('li');
+            var textElement = document.createTextNode("carregando...");
+            liElement.appendChild(textElement);
+            listElement.appendChild(liElement);
+        }
+        
+        function apiName(){
+
+            loading();
+
+            setTimeout(function(){
+                listElement.innerHTML = '';
+                axios.get(url+inputElement.value+'/repos',{timeout:3000})
+                .then(function(response){
+                list = response.data;
+                console.log(list);
+                renderList();
+               
+                })
+                .catch(function(error){
+                    console.log(error);
+                    alert("Error 404");
+                })
+            },2000);
+            
+
+        }
+       
+
+        function renderList(){
+            for(l of list){
+                var liElement = document.createElement('li');
+                var textElement = document.createTextNode(l.name);
+                liElement.appendChild(textElement);
+                listElement.appendChild(liElement);
+            }
+            
+        }
+
+        
+
+
+        
+
+
+    
+
+    </script>
+</body>
+</html>
